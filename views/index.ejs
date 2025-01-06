@@ -5,6 +5,21 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Formulario de Contacto</title>
       <link rel="stylesheet" href="stylesheets/style.css">
+
+      <!-- Google Analytics -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-YTPNSPFX7C"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-YTPNSPFX7C');
+      </script>
+
+      <!-- Google reCAPTCHA -->
+      <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+      <!-- Google Maps API -->
+      <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7TpVcCeS8bbFdNYm68vFWoZiNVtxPJq4"></script>
   </head>
   <body>
       <div class="container">
@@ -19,8 +34,31 @@
               <label for="comment">Comentario:</label>
               <textarea id="comment" name="comment" required></textarea>
 
+              <!-- reCAPTCHA Widget -->
+              <div class="g-recaptcha" data-sitekey="6Ldz0a4qAAAAAInGCaQBxLE9MAW2iFHElmGTmXUq"></div>
+
               <button type="submit">Enviar</button>
           </form>
+
+          <!-- Map Section -->
+          <div id="map" style="height: 400px; width: 100%;"></div>
       </div>
+
+      <script>
+        function initMap() {
+          const location = { lat: -34.397, lng: 150.644 }; // Fictitious address
+          const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 8,
+            center: location,
+          });
+          const marker = new google.maps.Marker({
+            position: location,
+            map: map,
+          });
+        }
+
+        // Initialize the map
+        window.onload = initMap;
+      </script>
   </body>
 </html>
