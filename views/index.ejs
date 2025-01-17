@@ -17,6 +17,11 @@
 
       <!-- Google reCAPTCHA -->
       <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+      <script>
+        function onSubmit(token) {
+          document.getElementById("demo-form").submit();
+        }
+      </script>
 
       <!-- Google Maps API -->
       <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7TpVcCeS8bbFdNYm68vFWoZiNVtxPJq4"></script>
@@ -35,7 +40,8 @@
               <textarea id="comment" name="comment" required></textarea>
 
               <!-- reCAPTCHA Widget -->
-              <div class="g-recaptcha" data-sitekey="6Ldz0a4qAAAAAInGCaQBxLE9MAW2iFHElmGTmXUq"></div>
+              <div class="g-recaptcha" data-sitekey="6LecCLsqAAAAAEHgghmpbFJ_xru1CMiN4_rH7rQf"></div>
+              
 
               <button type="submit">Enviar</button>
           </form>
