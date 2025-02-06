@@ -57,6 +57,17 @@ class ContactosController {
             res.status(500).send('Error al procesar la solicitud.');
         }
     }
+
+    async getAll(req, res) {
+        const model = new ContactosModel();
+        try {
+            const contacts = await model.getAll();
+            res.render('contactos', { contacts }); // Renderizar la vista con los contactos
+        } catch (error) {
+            console.error('Error al obtener contactos:', error);
+            res.status(500).send('Error al obtener contactos.');
+        }
+    }
 }
 
 module.exports = ContactosController;

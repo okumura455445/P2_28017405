@@ -11,12 +11,24 @@ class ContactosModel {
 
         this.db.run(`CREATE TABLE IF NOT EXISTS contactos (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
-            email TEXT NOT NULL,
-            name TEXT NOT NULL,
-            comment TEXT NOT NULL,
-            ip TEXT NOT NULL,
-            date TEXT NOT NULL
-        )`, (err) => {
+                        email TEXT NOT NULL,
+                        name TEXT NOT NULL,
+                        comment TEXT NOT NULL,
+                        ip TEXT NOT NULL,
+                        date TEXT NOT NULL
+                    )`, (err) => {
+            if (err) {
+                console.error(err.message);
+            }
+        });
+
+        // Create users table
+        this.db.run(`CREATE TABLE IF NOT EXISTS users (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        username TEXT UNIQUE,
+                        password_hash TEXT,
+                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                    )`, (err) => {
             if (err) {
                 console.error(err.message);
             }
@@ -44,6 +56,30 @@ class ContactosModel {
                     return reject(err);
                 }
                 resolve(rows);
+            });
+        });
+    }
+
+    registerUser(username, passwordHash) {
+        return new Promise((resolve, reject) => {
+            const sql = `INSERT INTO users (username, password_hash) VALUES (?, ?)`;
+            this.db.run(sql, [username, passwordHash], function(err) {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(this.lastID);
+            });
+        });
+    }
+
+    findUserByUsername(username) {
+        return new Promise((resolve, reject) => {
+            const sql = `SELECT * FROM users WHERE username = ?`;
+            this.db.get(sql, [username], (err, row) => {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(row);
             });
         });
     }
