@@ -51,7 +51,8 @@ class ContactosController {
             // Enviar el correo
             await transporter.sendMail(mailOptions);
 
-            res.send('Datos guardados con éxito y notificación enviada.');
+            // Redirect to paginaPrincipal.ejs
+            res.redirect('/paginaPrincipal'); // Redirect to the main page
         } catch (error) {
             console.error('Error al procesar la solicitud:', error);
             res.status(500).send('Error al procesar la solicitud.');
