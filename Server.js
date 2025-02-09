@@ -51,6 +51,7 @@ app.use(session({
     secret: 'loqsea', // Change this to a secure key
     resave: false,
     saveUninitialized: true,
+    store: new MongoStore(options),
     cookie: { 
         httpOnly: true,
         sameSite: 'strict',
