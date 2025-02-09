@@ -3,6 +3,7 @@ require('dotenv').config(); // Load environment variables
 const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session'); // For session management
+const MongoStore = require('connect-mongo'); // MongoDB session store
 const passport = require('passport'); // For authentication
 const bcrypt = require('bcrypt'); // For password hashing
 const ContactosController = require('./ContactosController');
@@ -12,6 +13,32 @@ const ContactosModel = require('./ContactosModel');
 
 const app = express();
 const port = 3000;
+
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = "mongodb+srv://Xang:64TClZp3H8Mc71cq@cluster0.ooi0f.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
+async function run() {
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+    // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+run().catch(console.dir);
 
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
@@ -27,11 +54,10 @@ app.use(session({
     cookie: { 
         httpOnly: true,
         sameSite: 'strict',
-        secure: process.env.NODE_ENV === 'production' // Set to true if using HTTPS
-    },
-    cookie: { maxAge: 15 * 60 * 1000 } // 15 minutes expiration
+        secure: process.env.NODE_ENV === 'production', // Set to true if using HTTPS
+        maxAge: 15 * 60 * 1000 // 15 minutes expiration
+    }
 }));
-
 
 // Initialize passport for authentication
 app.use(passport.initialize());
