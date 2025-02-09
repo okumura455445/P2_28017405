@@ -1,9 +1,13 @@
+require('dotenv').config(); // Load environment variables
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session'); // For session management
 const passport = require('passport'); // For authentication
 const bcrypt = require('bcrypt'); // For password hashing
 const ContactosController = require('./ContactosController');
+const GoogleStrategy = require('passport-google-oauth20').Strategy; // Google OAuth strategy
+
 const ContactosModel = require('./ContactosModel');
 
 const app = express();
@@ -17,9 +21,10 @@ app.use(express.static('public'));
 
 // Set up session management
 app.use(session({
-    secret: 'your_secret_key', // Change this to a secure key
+    secret: 'loqsea', // Change this to a secure key
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: { secure: false } // Set to true if using HTTPS
 }));
 
 // Initialize passport for authentication
@@ -57,6 +62,16 @@ app.post('/login', async (req, res) => {
     }
 });
 
+// Logout route
+app.get('/logout', (req, res) => {
+    req.logout((err) => {
+        if (err) {
+            return res.status(500).send('Error logging out.');
+        }
+        res.redirect('/login'); // Redirect to login after logout
+    });
+});
+
 // Registration route
 app.post('/register', async (req, res) => {
     const { username, password } = req.body;
@@ -85,6 +100,35 @@ app.get('/contactos', isAuthenticated, (req, res) => {
     const controller = new ContactosController();
     controller.getAll(req, res);
 });
+
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: "/auth/google/callback"
+}, async (accessToken, refreshToken, profile, done) => {
+    const model = new ContactosModel();
+    const user = await model.findUserByUsername(profile.id);
+    if (user) {
+        return done(null, user);
+    } else {
+        const newUser = {
+            username: profile.displayName,
+            password_hash: profile.id // Use Google ID as password_hash for simplicity
+        };
+        await model.registerUser(newUser.username, newUser.password_hash);
+        return done(null, newUser);
+    }
+}));
+
+app.get('/auth/google', passport.authenticate('google', {
+    scope: ['profile', 'email']
+}));
+
+app.get('/auth/google/callback', 
+    passport.authenticate('google', { failureRedirect: '/login' }),
+    (req, res) => {
+        res.redirect('/contactos'); // Successful authentication, redirect to contactos.
+    });
 
 app.listen(port, () => {
     console.log(`Servidor escuchando en http://localhost:${port}`);

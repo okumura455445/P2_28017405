@@ -15,6 +15,7 @@ class ContactosModel {
                         name TEXT NOT NULL,
                         comment TEXT NOT NULL,
                         ip TEXT NOT NULL,
+                        country TEXT NOT NULL,  // Added country field
                         date TEXT NOT NULL
                     )`, (err) => {
             if (err) {
@@ -37,9 +38,9 @@ class ContactosModel {
 
     save(data) {
         return new Promise((resolve, reject) => {
-            const { email, name, comment, ip, date } = data;
-            const sql = `INSERT INTO contactos (email, name, comment, ip, date) VALUES (?, ?, ?, ?, ?)`;
-            this.db.run(sql, [email, name, comment, ip, date], function(err) {
+            const { email, name, comment, ip, country, date } = data; // Include country
+            const sql = `INSERT INTO contactos (email, name, comment, ip, country, date) VALUES (?, ?, ?, ?, ?, ?)`;
+            this.db.run(sql, [email, name, comment, ip, country, date], function(err) {
                 if (err) {
                     return reject(err);
                 }

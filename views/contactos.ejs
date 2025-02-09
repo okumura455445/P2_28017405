@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contactos</title>
+    <meta property="og:title" content="Contactos" />
+    <meta property="og:description" content="View and manage your contacts." />
+    <meta property="og:image" content="URL to an image that represents your contacts page" />
+    <meta property="og:url" content="http://yourwebsite.com/contactos" />
     <link rel="stylesheet" href="/stylesheets/style.css">
     <script>
         function searchContacts() {
@@ -22,35 +26,33 @@
     </script>
 </head>
 <body>
-    <div class="container">
-        <h1>Contactos</h1>
-        <input type="text" id="searchInput" onkeyup="searchContacts()" placeholder="Buscar por nombre o email">
-        <table id="contactsTable">
-            <thead>
+    <h1>Contactos</h1>
+    <input type="text" id="searchInput" onkeyup="searchContacts()" placeholder="Buscar por nombre o email">
+    <table id="contactsTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Comentario</th>
+                <th>IP</th>
+                <th>País</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% contacts.forEach(contact => { %>
                 <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Email</th>
-                    <th>Comentario</th>
-                    <th>IP</th>
-                    <th>País</th>
-                    <th>Fecha</th>
+                    <td><%= contact.id %></td>
+                    <td><%= contact.name %></td>
+                    <td><%= contact.email %></td>
+                    <td><%= contact.comment %></td>
+                    <td><%= contact.ip %></td>
+                    <td><%= contact.country %></td>
+                    <td><%= contact.date %></td>
                 </tr>
-            </thead>
-            <tbody>
-                <% contacts.forEach(contact => { %>
-                    <tr>
-                        <td><%= contact.id %></td>
-                        <td><%= contact.name %></td>
-                        <td><%= contact.email %></td>
-                        <td><%= contact.comment %></td>
-                        <td><%= contact.ip %></td>
-                        <td><%= contact.country %></td>
-                        <td><%= contact.date %></td>
-                    </tr>
-                <% }); %>
-            </tbody>
-        </table>
-    </div>
+            <% }); %>
+        </tbody>
+    </table>
 </body>
 </html>
