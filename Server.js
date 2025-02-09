@@ -24,8 +24,14 @@ app.use(session({
     secret: 'loqsea', // Change this to a secure key
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false } // Set to true if using HTTPS
+    cookie: { 
+        httpOnly: true,
+        sameSite: 'strict',
+        secure: process.env.NODE_ENV === 'production' // Set to true if using HTTPS
+    },
+    cookie: { maxAge: 15 * 60 * 1000 } // 15 minutes expiration
 }));
+
 
 // Initialize passport for authentication
 app.use(passport.initialize());
