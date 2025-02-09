@@ -2,7 +2,7 @@ require('dotenv').config(); // Load environment variables
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const session = require('express-session'); // For session management
+const session = require('cookie-session'); // For session management
 const MongoStore = require('connect-mongo'); // MongoDB session store
 const passport = require('passport'); // For authentication
 const bcrypt = require('bcrypt'); // For password hashing
@@ -51,7 +51,6 @@ app.use(session({
     secret: 'loqsea', // Change this to a secure key
     resave: false,
     saveUninitialized: true,
-    store: new MongoStore(options),
     cookie: { 
         httpOnly: true,
         sameSite: 'strict',
