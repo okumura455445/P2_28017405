@@ -24,7 +24,7 @@ label {
 }
 
 input, textarea {
-  width: 100%;
+  width: 95%;
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
@@ -32,7 +32,7 @@ input, textarea {
 }
 
 button {
-  width: 100%;
+  width: 95%;
   padding: 10px;
   background-color: #28a745;
   color: white;
@@ -43,4 +43,30 @@ button {
 
 button:hover {
   background-color: #218838;
+}
+
+.google-signin-button {
+    display: inline-block;
+    width: 88%;
+    padding: 10px 20px;
+    margin: 10px 0;
+    background-color: #4285F4;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    border: 1px solid #4285F4;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.25);
+}
+
+.google-signin-button:hover {
+    background-color: #357ABD;
+    border-color: #357ABD;
+}
+
+.google-signin-button:active {
+    background-color: #2C6CB2;
+    box-shadow: none;
 }
