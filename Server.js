@@ -134,8 +134,8 @@ app.get('/contactos', isAuthenticated, (req, res) => {
 });
 
 passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    clientID: 949174830971-j0525dj1mbha6nv13dt8jpj7bo4du26v.apps.googleusercontent.com,
+    clientSecret: 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,
     callbackURL: "https://www.whatever.com/oauth2callback"
 }, async (accessToken, refreshToken, profile, done) => {
     const model = new ContactosModel();
